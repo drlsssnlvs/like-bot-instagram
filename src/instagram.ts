@@ -38,24 +38,28 @@ class Instagram {
 
     await page.waitFor(1500);
 
-    posts = page.$$('article > div:nth-child(3) img[decoding="auto"]');
+    posts = await page.$$('article > div:nth-child(3) img[decoding="auto"]');
 
     for (let i = 0; i < 3; i++) {
       const post = posts[i];
 
+      console.log(posts);
+
       await post.click();
 
-      await page.waitFor(3000);
-
-      const clickLike = await page.$x(
-        "/html/body/div[4]/div[2]/div/article/div[3]/section[1]/span[1]/button/div/span/svg"
+      const clickLike = await page.$$(
+        "body > div._2dDPU.CkGkG > div.zZYga > div > article > div.eo2As > section.ltpMr.Slqrh > span.fr66n > button > div"
       );
+
+      page.waitFor(2000);
 
       await clickLike[0].click();
 
-      await page.click(
-        "body > div._2dDPU.CkGkG > div.Igw0E.IwRSH.eGOV_._4EzTm.BI4qX.qJPeX.fm1AK.TxciK.yiMZG > button"
-      );
+      page.waitFor(2000);
+
+      const closeWindow = await page.$x("/html/body/div[4]/div[3]/button");
+
+      await closeWindow[0].click();
 
       page.waitFor(1000);
     }
