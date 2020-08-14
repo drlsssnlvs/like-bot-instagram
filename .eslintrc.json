@@ -20,7 +20,10 @@
   ],
   "rules": {
      "@typescript-eslint/no-explicit-any": "off",
-      "@typescript-eslint/explicit-module-boundary-types": "off",
+     "no-restricted-syntax": "off",
+     "no-await-in-loop": "off",
+     "no-plusplus": "off",
+     "@typescript-eslint/explicit-module-boundary-types": "off",
      "prettier/prettier": "error",
      "import/extensions": [
       "error",

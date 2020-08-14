@@ -1,6 +1,6 @@
 import puppeteer from "puppeteer";
 
-import { BASE_ULR } from "./consts";
+import { BASE_URL, TAG_URL } from "./consts";
 
 let browser: any = null;
 let page: any = null;
@@ -13,7 +13,7 @@ class Instagram {
   };
 
   auth = async (user: any, pass: any): Promise<void> => {
-    await page.goto(`${BASE_ULR}accounts/login/?source=auth_switcher`, {
+    await page.goto(`${BASE_URL}accounts/login/?source=auth_switcher`, {
       waitUntil: "networkidle2",
     });
 
@@ -27,6 +27,40 @@ class Instagram {
     );
 
     await confirmLogin[0].click();
+  };
+
+  like = async (tag: string): Promise<any> => {
+    let posts = [];
+
+    await page.waitFor(5000);
+
+    await page.goto(TAG_URL(tag), { waitUntil: "networkidle2" });
+
+    await page.waitFor(1500);
+
+    posts = page.$$('article > div:nth-child(3) img[decoding="auto"]');
+
+    for (let i = 0; i < 3; i++) {
+      const post = posts[i];
+
+      await post.click();
+
+      await page.waitFor(3000);
+
+      const clickLike = await page.$x(
+        "/html/body/div[4]/div[2]/div/article/div[3]/section[1]/span[1]/button/div/span/svg"
+      );
+
+      await clickLike[0].click();
+
+      await page.click(
+        "body > div._2dDPU.CkGkG > div.Igw0E.IwRSH.eGOV_._4EzTm.BI4qX.qJPeX.fm1AK.TxciK.yiMZG > button"
+      );
+
+      page.waitFor(1000);
+    }
+
+    page.waitFor(60000);
   };
 }
 
